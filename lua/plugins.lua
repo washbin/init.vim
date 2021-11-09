@@ -1,12 +1,16 @@
 local use = require('packer').use
 require('packer').startup(
 	function()
+		-- plugin manager
 		use 'wbthomason/packer.nvim'
+		-- lsp autocompletions
 		use {
 			'neovim/nvim-lspconfig',
-			'williamboman/nvim-lsp-installer'
+			requires = 'williamboman/nvim-lsp-installer'
 		}
-		use 'nvim-treesitter/nvim-treesitter'
+		use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
+		use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+		-- navigations fuzzyfinding ease of usage
 		use {
 			'nvim-telescope/telescope.nvim',
 			requires = {{
@@ -15,19 +19,31 @@ require('packer').startup(
 				'nvim-telescope/telescope-fzf-native.nvim',
 			}}
 		}
+		-- visual improvements / highlighting
+		use 'nvim-treesitter/nvim-treesitter'
+		use {
+			'kyazdani42/nvim-tree.lua',
+			requires = 'kyazdani42/nvim-web-devicons',
+			config =
+				function()
+					require'nvim-tree'.setup {
+						view = {
+							side = 'left'
+						}
+					}
+				end
+		}
 		use 'navarasu/onedark.nvim'
 		use 'nvim-lualine/lualine.nvim'
+		-- generals
 		use 'tpope/vim-commentary'
 		use 'jiangmiao/auto-pairs'
-		-- use 'windwp/nvim-autopairs'
-		use 'kyazdani42/nvim-web-devicons'
 		use 'APZelos/blamer.nvim'
-
-		use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
-		use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+		use 'nathom/filetype.nvim'
+		-- snippets
 		use 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
 		use 'L3MON4D3/LuaSnip' -- Snippets plugin
-
+		-- beta / nightly features
 		use 'github/copilot.vim' -- Copilot
 	end
 )
