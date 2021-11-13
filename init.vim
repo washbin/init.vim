@@ -1,3 +1,4 @@
+set number
 set relativenumber
 set cursorline			" line with cursor is highlited
 set mouse=a			" Enable mouse use
@@ -27,7 +28,7 @@ vnoremap < <gv
 
 """ Integrated terminal opens in insert mode and mapped to Ctrl t
 set splitbelow
-nnoremap <silent> <C-t> :split term://bash<CR> :set nornu<CR> :resize 15<CR> i
+nnoremap <silent> <C-t> :split term://bash<CR> :set nonu<CR> :set nornu<CR> :resize 15<CR> i
 
 """ Set cursorline only in active window
 augroup cursor_off
@@ -127,6 +128,9 @@ nnoremap <leader>fe <cmd>Telescope file_browser<cr>
 " auto-format
 autocmd BufWritePre *.ts,*.tsx lua vim.lsp.buf.formatting()
 autocmd BufWritePre *.js,*.jsx lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.html,*.css lua vim.lsp.buf.formatting()
 autocmd BufWritePre *.py lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.rs lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
 autocmd BufWritePre *.tf lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.rs lua vim.lsp.buf.formatting()
+
