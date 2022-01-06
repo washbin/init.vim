@@ -57,7 +57,7 @@ nnoremap <silent> <leader>z :ZoomToggle<CR>
 """ PLUGINS 
 
 """ Nvim Tree settings begin """
-let g:nvim_tree_gitignore = 1
+" let g:nvim_tree_gitignore = 1
 let g:nvim_tree_quit_on_open = 1
 let g:nvim_tree_indent_markers = 1
 let g:nvim_tree_git_hl = 1
@@ -126,11 +126,19 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>fe <cmd>Telescope file_browser<cr>
 
 " auto-format
-autocmd BufWritePre *.ts,*.tsx lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.js,*.jsx lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.html,*.css lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.ts lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.tsx lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.js lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.html lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.css lua vim.lsp.buf.formatting()
 autocmd BufWritePre *.py lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.c lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.h lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.cpp lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.hpp lua vim.lsp.buf.formatting()
 autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.tf lua vim.lsp.buf.formatting()
 autocmd BufWritePre *.rs lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.tf lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.dart lua vim.lsp.buf.formatting()
 

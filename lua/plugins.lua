@@ -24,8 +24,11 @@ require("packer").startup({
         },
       },
     })
+    -- debugging
+    -- use("mfussenegger/nvim-dap")
+    -- use("rcarriga/nvim-dap-ui")
     -- visual improvements / highlighting
-    use("nvim-treesitter/nvim-treesitter")
+    use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
     use({
       "kyazdani42/nvim-tree.lua",
       requires = "kyazdani42/nvim-web-devicons",
@@ -40,8 +43,6 @@ require("packer").startup({
     use("jiangmiao/auto-pairs")
     use("APZelos/blamer.nvim")
     use("nathom/filetype.nvim")
-    -- beta / nightly features
-    use("github/copilot.vim") -- Copilot
   end,
   config = {
     display = {
@@ -74,19 +75,23 @@ local on_attach = function(client, bufnr)
   local function buf_set_option(...)
     vim.api.nvim_buf_set_option(bufnr, ...)
   end
+
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+
   -- Mappings.
-  local opts = { noremap = true, silent = true }
   -- See `:help vim.lsp.*` for documentation on any of the below functions
+
+  local opts = { noremap = true, silent = true }
+
   buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
   buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
   buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
   buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-  buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-  buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-  buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+  -- buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+  -- buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+  -- buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
   buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
   buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
   buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
@@ -120,7 +125,6 @@ local isort = {
   formatStdin = true,
 }
 local black = { formatCommand = "black --fast -", formatStdin = true }
-local flake8 = { formatCommand = "flake8 -" }
 local stylua = {
   formatCommand = "stylua --indent-type spaces --indent-width 2 --quote-style AutoPreferDouble -",
   formatStdin = true,
@@ -133,13 +137,17 @@ local languages = {
   javascriptreact = { prettier, eslint },
   ["typescript.tsx"] = { prettier, eslint },
   ["javascript.jsx"] = { prettier, eslint },
+  svelte = { prettier, eslint },
   yaml = { prettier },
   json = { prettier },
   html = { prettier },
   scss = { prettier },
   css = { prettier },
   markdown = { prettier },
-  python = { isort, black, flake8 },
+  md = { prettier },
+  solidity = { prettier },
+  sol = { prettier },
+  python = { isort, black },
   lua = { stylua },
 }
 
