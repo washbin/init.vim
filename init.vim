@@ -55,61 +55,12 @@ nnoremap <silent> <leader>z :ZoomToggle<CR>
 
 
 """ PLUGINS 
-
-""" Nvim Tree settings begin """
-" let g:nvim_tree_gitignore = 1
+" NvimTree
 let g:nvim_tree_quit_on_open = 1
-let g:nvim_tree_indent_markers = 1
-let g:nvim_tree_git_hl = 1
-let g:nvim_tree_highlight_opened_files = 1
-let g:nvim_tree_add_trailing = 1
-let g:nvim_tree_group_empty = 1
-let g:nvim_tree_disable_window_picker = 1
-let g:nvim_tree_icon_padding = ' '
-let g:nvim_tree_symlink_arrow = ' >> '
-let g:nvim_tree_respect_buf_cwd = 1
-let g:nvim_tree_create_in_closed_folder = 0
-let g:nvim_tree_window_picker_exclude = {
-    \   'filetype': [
-    \     'notify',
-    \     'packer',
-    \     'qf'
-    \   ],
-    \   'buftype': [
-    \     'terminal'
-    \   ]
-    \ }
-let g:nvim_tree_special_files = { 'README.md': 1, 'Makefile': 1, 'MAKEFILE': 1 }
-let g:nvim_tree_icons = {
-    \ 'default': '',
-    \ 'symlink': '',
-    \ 'git': {
-    \   'unstaged': "✗",
-    \   'staged': "✓",
-    \   'unmerged': "",
-    \   'renamed': "➜",
-    \   'untracked': "★",
-    \   'deleted': "",
-    \   'ignored': "◌"
-    \   },
-    \ 'folder': {
-    \   'arrow_open': "",
-    \   'arrow_closed': "",
-    \   'default': "",
-    \   'open': "",
-    \   'empty': "",
-    \   'empty_open': "",
-    \   'symlink': "",
-    \   'symlink_open': "",
-    \   }
-    \ }
-
 nnoremap <C-n> :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
 set termguicolors " this variable must be enabled for colors to be applied properly
-highlight NvimTreeFolderIcon guibg=blue
-""" Nvim Tree settings end """
 
 lua require('plugins')
 
@@ -124,6 +75,13 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>fe <cmd>Telescope file_browser<cr>
+
+" Copilot keybind
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
+
+" TagBar
+nnoremap <leader>tg <cmd>TagbarToggle<CR>
 
 " auto-format
 autocmd BufWritePre *.ts lua vim.lsp.buf.formatting()

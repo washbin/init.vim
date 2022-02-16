@@ -13,6 +13,7 @@ require("packer").startup({
     -- snippets
     use("L3MON4D3/LuaSnip") -- Snippets plugin
     use("saadparwaiz1/cmp_luasnip") -- Snippets source for nvim-cmp
+    use({ "tzachar/cmp-tabnine", run = "./install.sh", requires = "hrsh7th/nvim-cmp" })
     -- navigations / fuzzyfinding
     use({
       "nvim-telescope/telescope.nvim",
@@ -24,9 +25,12 @@ require("packer").startup({
         },
       },
     })
-    -- debugging
-    -- use("mfussenegger/nvim-dap")
-    -- use("rcarriga/nvim-dap-ui")
+    -- Copilot
+    use("github/copilot.vim")
+    -- Tag Navigation
+    use("preservim/tagbar")
+    -- Git
+    use("lewis6991/gitsigns.nvim")
     -- visual improvements / highlighting
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
     use({
@@ -43,6 +47,10 @@ require("packer").startup({
     use("jiangmiao/auto-pairs")
     use("APZelos/blamer.nvim")
     use("nathom/filetype.nvim")
+    -- use("metakirby5/codi.vim")
+    -- Debugging
+    -- use("mfussenegger/nvim-dap")
+    -- use("rcarriga/nvim-dap-ui")
   end,
   config = {
     display = {
@@ -53,14 +61,91 @@ require("packer").startup({
   },
 })
 
-require("onedark").setup()
-require("lualine").setup()
+require("onedark").setup({
+  style = "darker",
+})
+require("onedark").load()
+
+require("gitsigns").setup()
+
+require("lualine").setup({
+  options = { theme = "onedark" },
+})
 require("nvim-treesitter.configs").setup({
   highlight = { enable = true, language_tree = true },
   incremental_selection = { enable = true },
   indent = { enable = true },
   autotag = { enable = true },
   refactor = { highlight_definitions = { enable = true } },
+})
+-- each of these are documented in `:help nvim-tree.OPTION_NAME`
+require("nvim-tree").setup({
+  disable_netrw = true,
+  hijack_netrw = true,
+  open_on_setup = false,
+  ignore_ft_on_setup = {},
+  auto_close = true,
+  auto_reload_on_write = true,
+  open_on_tab = false,
+  hijack_cursor = true,
+  update_cwd = false,
+  hijack_directories = {
+    enable = true,
+    auto_open = true,
+  },
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    },
+  },
+  update_focused_file = {
+    enable = false,
+    update_cwd = false,
+    ignore_list = {},
+  },
+  system_open = {
+    cmd = nil,
+    args = {},
+  },
+  filters = {
+    dotfiles = false,
+    custom = {},
+  },
+  git = {
+    enable = true,
+    ignore = true,
+    timeout = 500,
+  },
+  view = {
+    width = 30,
+    height = 30,
+    hide_root_folder = false,
+    side = "right",
+    auto_resize = false,
+    mappings = {
+      custom_only = false,
+      list = {},
+    },
+    number = false,
+    relativenumber = false,
+    signcolumn = "yes",
+  },
+  trash = {
+    cmd = "trash",
+    require_confirm = true,
+  },
+  actions = {
+    change_dir = {
+      global = false,
+    },
+    open_file = {
+      quit_on_open = false,
+    },
+  },
 })
 
 -- Add additional capabilities supported by nvim-cmp
@@ -108,72 +193,8 @@ local on_attach = function(client, bufnr)
   end
 end
 
--- Formatting via efm
-local prettier = {
-  formatCommand = "prettier --stdin-filepath ${INPUT}",
-  formatStdin = true,
-}
-local eslint = {
-  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-  lintIgnoreExitCode = true,
-  lintStdin = true,
-  lintFormats = { "%f(%l,%c): %tarning %m", "%f(%l,%c): %rror %m" },
-  lintSource = "eslint",
-}
-local isort = {
-  formatCommand = "isort --stdout --profile black -",
-  formatStdin = true,
-}
-local black = { formatCommand = "black --fast -", formatStdin = true }
-local stylua = {
-  formatCommand = "stylua --indent-type spaces --indent-width 2 --quote-style AutoPreferDouble -",
-  formatStdin = true,
-}
-
-local languages = {
-  typescript = { prettier, eslint },
-  javascript = { prettier, eslint },
-  typescriptreact = { prettier, eslint },
-  javascriptreact = { prettier, eslint },
-  ["typescript.tsx"] = { prettier, eslint },
-  ["javascript.jsx"] = { prettier, eslint },
-  svelte = { prettier, eslint },
-  yaml = { prettier },
-  json = { prettier },
-  html = { prettier },
-  scss = { prettier },
-  css = { prettier },
-  markdown = { prettier },
-  md = { prettier },
-  solidity = { prettier },
-  sol = { prettier },
-  python = { isort, black },
-  lua = { stylua },
-}
-
 require("nvim-lsp-installer").on_server_ready(function(server)
-  if server.name == "efm" then
-    server:setup({
-      filetypes = vim.tbl_keys(languages),
-      init_options = { documentFormatting = true, codeAction = true },
-      settings = {
-        languages = languages,
-        log_level = 1,
-        log_file = "~/.efm.log",
-      },
-      on_attach = on_attach,
-    })
-  elseif server.name == "tsserver" then
-    server:setup({
-      on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        on_attach(client, bufnr)
-      end,
-      capabilities = capabilities,
-    })
-  else
-    server:setup({ on_attach = on_attach, capabilities = capabilities })
-  end
+  server:setup({ on_attach = on_attach, capabilities = capabilities })
 end)
 
 -- Set completeopt to have a better completion experience
@@ -220,6 +241,5 @@ cmp.setup({
       end
     end,
   },
-  sources = { { name = "nvim_lsp" }, { name = "luasnip" } },
-  experimental = { native_menu = true, ghost_text = true },
+  sources = { { name = "nvim_lsp" }, { name = "luasnip" }, { name = "cmp_tabnine" } },
 })
