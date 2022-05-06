@@ -56,7 +56,6 @@ nnoremap <silent> <leader>z :ZoomToggle<CR>
 
 """ PLUGINS 
 " NvimTree
-let g:nvim_tree_quit_on_open = 1
 nnoremap <C-n> :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>

@@ -10,6 +10,8 @@ require("packer").startup({
     })
     use("hrsh7th/nvim-cmp") -- Autocompletion plugin
     use("hrsh7th/cmp-nvim-lsp") -- LSP source for nvim-cmp
+    use("jose-elias-alvarez/null-ls.nvim") -- LSP source for null-ls
+    use("jose-elias-alvarez/nvim-lsp-ts-utils") -- LSP source for typescript
     -- snippets
     use("L3MON4D3/LuaSnip") -- Snippets plugin
     use("saadparwaiz1/cmp_luasnip") -- Snippets source for nvim-cmp
@@ -84,7 +86,6 @@ require("nvim-tree").setup({
   hijack_netrw = true,
   open_on_setup = false,
   ignore_ft_on_setup = {},
-  auto_close = true,
   auto_reload_on_write = true,
   open_on_tab = false,
   hijack_cursor = true,
@@ -125,7 +126,6 @@ require("nvim-tree").setup({
     height = 30,
     hide_root_folder = false,
     side = "right",
-    auto_resize = false,
     mappings = {
       custom_only = false,
       list = {},
@@ -194,8 +194,35 @@ local on_attach = function(client, bufnr)
 end
 
 require("nvim-lsp-installer").on_server_ready(function(server)
-  server:setup({ on_attach = on_attach, capabilities = capabilities })
+  if server.name == "tsserver" then
+    server:setup({
+
+      on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+
+        local ts_utils = require("nvim-lsp-ts-utils")
+        ts_utils.setup({})
+        ts_utils.setup_client(client)
+
+        on_attach(client, bufnr)
+      end,
+      capabilities = capabilities,
+    })
+  else
+    server:setup({ on_attach = on_attach, capabilities = capabilities })
+  end
 end)
+
+local null_ls = require("null-ls")
+null_ls.setup({
+	sources = {
+        null_ls.builtins.diagnostics.eslint,
+        null_ls.builtins.code_actions.eslint,
+        null_ls.builtins.formatting.prettier
+	},
+	on_attach = on_attach
+})
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
@@ -241,5 +268,6 @@ cmp.setup({
       end
     end,
   },
-  sources = { { name = "nvim_lsp" }, { name = "luasnip" }, { name = "cmp_tabnine" } },
+  -- sources = { { name = "nvim_lsp" }, { name = "luasnip" }, { name = "cmp_tabnine" } },
+  sources = { { name = "nvim_lsp" }, { name = "luasnip" } },
 })
