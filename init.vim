@@ -17,8 +17,9 @@ nnoremap <C-left> <C-w>>
 nnoremap <C-right> <C-w><
 
 """ Moving lines up and down with alt j k in normal and visual
-nnoremap <silent> <A-k> :m .-2<CR>==
 nnoremap <silent> <A-j> :m .+1<CR>==
+nnoremap <silent> <A-k> :m .-2<CR>==
+
 vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
 vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
 
@@ -55,25 +56,29 @@ nnoremap <silent> <leader>z :ZoomToggle<CR>
 
 
 """ PLUGINS 
+lua require('plugins')
+
 " NvimTree
+set termguicolors " this variable must be enabled for colors to be applied properly
 nnoremap <C-n> :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
-set termguicolors " this variable must be enabled for colors to be applied properly
-
-lua require('plugins')
 
 augroup packer_user_config
   autocmd!
   autocmd BufWritePost plugins.lua source <afile> | PackerCompile
 augroup end
 
+" Tree-sitter based folding
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+" Experimental -> hit zx if breaks, fold with za
+
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>fe <cmd>Telescope file_browser<cr>
 
 " Copilot keybind
 imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
@@ -83,19 +88,19 @@ let g:copilot_no_tab_map = v:true
 nnoremap <leader>tg <cmd>TagbarToggle<CR>
 
 " auto-format
-autocmd BufWritePre *.ts lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.tsx lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.js lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.html lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.css lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.py lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.c lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.h lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.cpp lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.hpp lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.rs lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.tf lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.dart lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.tsx lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.html lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.css lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.c lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.h lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.cpp lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.hpp lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.tf lua vim.lsp.buf.formatting_sync()
+autocmd BufWritePre *.dart lua vim.lsp.buf.formatting_sync()
 

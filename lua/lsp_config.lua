@@ -31,6 +31,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
   buf_set_keymap("<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
   buf_set_keymap("<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+  buf_set_keymap("<space>sm", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
 
   -- buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
   -- buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
@@ -70,7 +71,6 @@ require("nvim-lsp-installer").on_server_ready(function(server)
       on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.document_range_formatting = false
-
         on_attach(client, bufnr)
       end,
       capabilities = capabilities,
@@ -88,9 +88,11 @@ null_ls.setup({
     null_ls.builtins.formatting.prettier,
 
     null_ls.builtins.diagnostics.flake8,
-    null_ls.builtins.diagnostics.pyproject_flake8,
+    -- null_ls.builtins.diagnostics.pyproject_flake8,
     null_ls.builtins.formatting.isort,
     null_ls.builtins.formatting.black,
+
+    null_ls.builtins.diagnostics.solhint,
   },
   on_attach = on_attach,
 })
