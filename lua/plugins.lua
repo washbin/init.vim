@@ -16,9 +16,6 @@ require("packer").startup({
     use({
       "kyazdani42/nvim-tree.lua",
       requires = "kyazdani42/nvim-web-devicons",
-      config = function()
-        require("nvim-tree").setup({ view = { side = "right" } })
-      end,
     })
     use("navarasu/onedark.nvim")
     use("nvim-lualine/lualine.nvim")
