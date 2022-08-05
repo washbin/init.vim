@@ -104,3 +104,4 @@ autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync()
 autocmd BufWritePre *.tf lua vim.lsp.buf.formatting_sync()
 autocmd BufWritePre *.dart lua vim.lsp.buf.formatting_sync()
 
+set foldlevel=99

@@ -6,15 +6,17 @@ end
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 set_keymap("<space>e", "<cmd>lua vim.diagnostic.open_float(0, {scope='line',border='single'})<CR>", opts)
-set_keymap("[d", "<cmd>lua vim.diagnostic.goto_prev({float={border='single'}})<CR>", opts)
-set_keymap("]d", "<cmd>lua vim.diagnostic.goto_next({float={border='single'}})<CR>", opts)
+set_keymap("[d", "<cmd>lua vim.diagnostic.goto_prev({float={border='rounded'}})<CR>", opts)
+set_keymap("]d", "<cmd>lua vim.diagnostic.goto_next({float={border='rounded'}})<CR>", opts)
 set_keymap("<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.api.nvim_buf_set_option(bufnr, "tagfunc", "v:lua.vim.lsp.tagfunc")
 
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, "n", ...)
@@ -47,15 +49,15 @@ local on_attach = function(client, bufnr)
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
-    hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-    hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-    hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-    augroup lsp_document_highlight
-    autocmd! * <buffer>
-    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    augroup END
-    ]],
+	hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+	hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+	hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+	augroup lsp_document_highlight
+	autocmd! * <buffer>
+	autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+	autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+	augroup END
+      ]],
       false
     )
   end
@@ -64,9 +66,13 @@ end
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+local formatting_disabled_servers = {
+  ["tsserver"] = true,
+  ["html"] = true,
+}
 -- Setup LSP
 require("nvim-lsp-installer").on_server_ready(function(server)
-  if server.name == "tsserver" then
+  if formatting_disabled_servers[server.name] then
     server:setup({
       on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
@@ -95,4 +101,35 @@ null_ls.setup({
     null_ls.builtins.diagnostics.solhint,
   },
   on_attach = on_attach,
+})
+
+local lsp = vim.lsp
+lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
+  border = "rounded",
+})
+lsp.handlers["textDocument/signatureHelp"] = lsp.with(lsp.handlers.signature_help, {
+  border = "rounded",
+})
+
+local sign = function(opts)
+  vim.fn.sign_define(opts.name, {
+    texthl = opts.name,
+    text = opts.text,
+    numhl = "",
+  })
+end
+sign({ name = "DiagnosticSignError", text = "✘" })
+sign({ name = "DiagnosticSignWarn", text = "▲" })
+sign({ name = "DiagnosticSignHint", text = "⚑" })
+sign({ name = "DiagnosticSignInfo", text = "" })
+
+vim.diagnostic.config({
+  virtual_text = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+  },
 })
