@@ -40,6 +40,7 @@ require("packer").startup({
       },
     })
     -- Tag Navigation
+    use("simrat39/symbols-outline.nvim")
     use("preservim/tagbar")
     -- Snippets
     use("L3MON4D3/LuaSnip") -- Snippets plugin
@@ -74,6 +75,7 @@ require("nvim-treesitter.configs").setup({
   refactor = { highlight_definitions = { enable = true } },
 })
 require("dressing").setup({})
+require("symbols-outline").setup()
 
 --- Import settings ---
 require("lsp_config")

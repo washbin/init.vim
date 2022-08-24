@@ -1,5 +1,5 @@
 set number
-set relativenumber
+" set relativenumber		" show's line number relative to current line
 set cursorline			" line with cursor is highlited
 set mouse=a			" Enable mouse use
 set clipboard+=unnamedplus	" Same clipboard for nvim and system
@@ -17,11 +17,10 @@ nnoremap <C-left> <C-w>>
 nnoremap <C-right> <C-w><
 
 """ Moving lines up and down with alt j k in normal and visual
-nnoremap <silent> <A-j> :m .+1<CR>==
 nnoremap <silent> <A-k> :m .-2<CR>==
-
-vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
+nnoremap <silent> <A-j> :m .+1<CR>==
 vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
+vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
 
 """ Indenting in visual mode persistence
 vnoremap > >gv
