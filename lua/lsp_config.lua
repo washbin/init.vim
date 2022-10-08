@@ -40,13 +40,13 @@ local on_attach = function(client, bufnr)
   -- buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
 
   -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     buf_set_keymap("<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
+  elseif client.server_capabilities.document_range_formatting then
     buf_set_keymap("<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
 	hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
@@ -75,8 +75,8 @@ require("nvim-lsp-installer").on_server_ready(function(server)
   if formatting_disabled_servers[server.name] then
     server:setup({
       on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
         on_attach(client, bufnr)
       end,
       capabilities = capabilities,
