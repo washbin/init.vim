@@ -1,6 +1,5 @@
-local use = require("packer").use
 require("packer").startup({
-  function()
+  function(use)
     -- Plugin manager
     use("wbthomason/packer.nvim")
     -- Lsp / autocompletions
@@ -66,6 +65,11 @@ require("onedark").load()
 require("gitsigns").setup()
 require("lualine").setup({
   options = { theme = "onedark" },
+  tabline = {
+    lualine_a = {'buffers'},
+    lualine_z = {'tabs'},
+  },
+  extensions = {'nvim-tree'},
 })
 require("nvim-treesitter.configs").setup({
   highlight = { enable = true, language_tree = true },

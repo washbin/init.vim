@@ -13,8 +13,8 @@ inoremap ii <Esc>
 """ Resize split windows
 nnoremap <C-up> <C-w>+
 nnoremap <C-down> <C-w>-
-nnoremap <C-left> <C-w>>
-nnoremap <C-right> <C-w><
+nnoremap <C-right> <C-w>>
+nnoremap <C-left> <C-w><
 
 """ Moving lines up and down with alt j k in normal and visual
 nnoremap <silent> <A-k> :m .-2<CR>==
@@ -32,9 +32,9 @@ nnoremap <silent> <C-t> :split term://bash<CR> :set nonu<CR> :set nornu<CR> :res
 
 """ Set cursorline only in active window
 augroup cursor_off
-	autocmd!
-	autocmd WinLeave * set nocursorline
-	autocmd WinEnter * set cursorline
+    autocmd!
+    autocmd WinLeave * set nocursorline
+    autocmd WinEnter * set cursorline
 augroup END
 
 
@@ -64,14 +64,15 @@ nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
 
 augroup packer_user_config
-  autocmd!
-  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
 augroup end
 
 " Tree-sitter based folding
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 " Experimental -> hit zx if breaks, fold with za
+set foldlevel=99
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -102,5 +103,3 @@ autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync()
 autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync()
 autocmd BufWritePre *.tf lua vim.lsp.buf.formatting_sync()
 autocmd BufWritePre *.dart lua vim.lsp.buf.formatting_sync()
-
-set foldlevel=99
