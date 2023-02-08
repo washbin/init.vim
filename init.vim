@@ -87,6 +87,9 @@ let g:copilot_no_tab_map = v:true
 " TagBar
 nnoremap <leader>tg <cmd>TagbarToggle<CR>
 
+" Symbols Outline
+nnoremap <leader>sm <cmd>SymbolsOutline<CR>
+
 " auto-format
 autocmd BufWritePre *.ts lua vim.lsp.buf.format()
 autocmd BufWritePre *.tsx lua vim.lsp.buf.format()
@@ -103,3 +106,7 @@ autocmd BufWritePre *.go lua vim.lsp.buf.format()
 autocmd BufWritePre *.rs lua vim.lsp.buf.format()
 autocmd BufWritePre *.tf lua vim.lsp.buf.format()
 autocmd BufWritePre *.dart lua vim.lsp.buf.format()
+autocmd BufWritePre *.elm lua vim.lsp.buf.format()
+autocmd BufWritePre *.ex lua vim.lsp.buf.format()
+autocmd BufWritePre *.prisma lua vim.lsp.buf.format()
+autocmd BufWritePre *.nix lua vim.lsp.buf.format()
