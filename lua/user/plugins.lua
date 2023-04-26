@@ -25,9 +25,9 @@ require("packer").startup({
 		})
 		use("williamboman/mason-lspconfig.nvim")
 		use("jose-elias-alvarez/null-ls.nvim")
-		-- use("simrat39/rust-tools.nvim")
-		-- use("p00f/clangd_extensions.nvim")
-		-- use("b0o/schemastore.nvim")
+		use("simrat39/rust-tools.nvim")
+		use("p00f/clangd_extensions.nvim")
+		use("b0o/schemastore.nvim")
 		-- better code highlighting
 		use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
 		-- Visual improvements

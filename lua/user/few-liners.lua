@@ -40,6 +40,7 @@ require("nvim-treesitter.configs").setup({
 		"tsx",
 		"css",
 		"json",
+		"yaml",
 		"html",
 		"rust",
 		"python",

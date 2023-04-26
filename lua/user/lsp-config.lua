@@ -29,13 +29,6 @@ vim.diagnostic.config({
 	},
 })
 
--- Global mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
-vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
-
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -65,11 +58,69 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<space>f", function()
 			vim.lsp.buf.format({ async = true })
 		end, opts)
+
+		vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
+		vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+		vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+		vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
 	end,
 })
 
 require("mason").setup()
-require("mason-lspconfig").setup()
+require("mason-lspconfig").setup({
+	ensure_installed = {
+		"rust_analyzer",
+		"clangd",
+		"jsonls",
+		"yamlls",
+		"tsserver",
+		"pyright",
+	},
+})
+
+-- Add additional capabilities supported by nvim-cmp
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+require("mason-lspconfig").setup_handlers({
+	function(server_name) -- default handler (optional)
+		require("lspconfig")[server_name].setup({
+			capabilities = capabilities,
+		})
+	end,
+	["rust_analyzer"] = function()
+		require("rust-tools").setup({
+			server = {
+				on_attach = function(_, bufnr)
+					-- Hover actions
+					vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+					-- Code action groups
+					vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+				end,
+			},
+		})
+	end,
+	["clangd"] = function()
+		require("clangd_extensions").setup()
+	end,
+	["jsonls"] = function()
+		require("lspconfig").jsonls.setup({
+			settings = {
+				json = {
+					schemas = require("schemastore").json.schemas(),
+					validate = { enable = true },
+				},
+			},
+		})
+	end,
+	["yamlls"] = function()
+		require("lspconfig").yamlls.setup({
+			settings = {
+				yaml = {
+					schemas = require("schemastore").yaml.schemas(),
+				},
+			},
+		})
+	end,
+})
 
 local null_ls = require("null-ls")
 null_ls.setup({
@@ -87,47 +138,5 @@ null_ls.setup({
 
 		null_ls.builtins.completion.spell,
 	},
-
 	on_attach = on_attach,
 })
-
--- Add additional capabilities supported by nvim-cmp
--- local capabilities = require("cmp_nvim_lsp").default_capabilities()
--- local lspconfig = require("lspconfig")
-
--- -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
--- local servers = { "pyright", "eslint", "tsserver" }
--- for _, lsp in ipairs(servers) do
--- 	lspconfig[lsp].setup({
--- 		-- on_attach = my_custom_on_attach,
--- 		capabilities = capabilities,
--- 	})
--- end
-
--- local rt = require("rust-tools")
--- rt.setup({
--- 	server = {
--- 		on_attach = function(_, bufnr)
--- 			-- Hover actions
--- 			vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
--- 			-- Code action groups
--- 			vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
--- 		end,
--- 	},
--- })
--- require("clangd_extensions").setup()
--- require("lspconfig").jsonls.setup({
--- 	settings = {
--- 		json = {
--- 			schemas = require("schemastore").json.schemas(),
--- 			validate = { enable = true },
--- 		},
--- 	},
--- })
--- require("lspconfig").yamlls.setup({
--- 	settings = {
--- 		yaml = {
--- 			schemas = require("schemastore").yaml.schemas(),
--- 		},
--- 	},
--- })
