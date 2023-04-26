@@ -15,6 +15,8 @@ require("packer").startup({
 	function(use)
 		-- Plugin manager
 		use("wbthomason/packer.nvim")
+		-- lua util functions
+		use("nvim-lua/plenary.nvim")
 		-- Lsp / autocompletions
 		use("neovim/nvim-lspconfig")
 		use("hrsh7th/nvim-cmp") -- Autocompletion plugin
@@ -31,36 +33,91 @@ require("packer").startup({
 		-- better code highlighting
 		use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
 		-- Visual improvements
-		use("kyazdani42/nvim-tree.lua")
+		use({
+			"navarasu/onedark.nvim",
+			config = function()
+				require("onedark").setup({
+					style = "deep",
+				})
+				require("onedark").load()
+			end,
+		})
 		use("kyazdani42/nvim-web-devicons")
-		use("navarasu/onedark.nvim")
-		use("nvim-lualine/lualine.nvim")
-		use("stevearc/dressing.nvim")
+		use({
+			"kyazdani42/nvim-tree.lua",
+			config = function()
+				require("nvim-tree").setup({
+					view = {
+						side = "right",
+					},
+				})
+			end,
+		})
+		use({
+			"nvim-lualine/lualine.nvim",
+			config = function()
+				require("lualine").setup({
+					tabline = {
+						lualine_a = { "buffers" },
+						lualine_z = { "tabs" },
+					},
+					extensions = { "nvim-tree" },
+				})
+			end,
+		})
+		use({
+			"stevearc/dressing.nvim",
+			config = function()
+				require("dressing").setup({})
+			end,
+		})
 		-- Generals
 		use("tpope/vim-commentary")
 		use("jiangmiao/auto-pairs")
-		use("APZelos/blamer.nvim")
 		use("editorconfig/editorconfig-vim") -- Support for .editorconfig
 		-- Copilot
 		use("github/copilot.vim")
 		-- Git
-		use("tpope/vim-fugitive") -- git in nvim
-		use("lewis6991/gitsigns.nvim")
-		-- Navigations / fuzzyfinding
+		use("tpope/vim-fugitive")
 		use({
-			"nvim-telescope/telescope.nvim",
-			requires = "nvim-lua/plenary.nvim",
+			"lewis6991/gitsigns.nvim",
+			config = function()
+				require("gitsigns").setup({
+					signs = {
+						add = { text = "▎" },
+						change = { text = "▎" },
+						delete = { text = "➤" },
+						topdelete = { text = "➤" },
+						changedelete = { text = "▎" },
+					},
+				})
+			end,
 		})
+		-- Navigations / fuzzyfinding
+		use("nvim-telescope/telescope.nvim")
 		-- Tag Navigation
-		use("simrat39/symbols-outline.nvim")
+		use({
+			"simrat39/symbols-outline.nvim",
+			config = function()
+				require("symbols-outline").setup()
+			end,
+		})
 		use("preservim/tagbar")
 		-- Snippets
 		use("L3MON4D3/LuaSnip") -- Snippets plugin
 		use("saadparwaiz1/cmp_luasnip") -- Snippets source for nvim-cmp
-
 		-- Debugging
 		-- use("mfussenegger/nvim-dap")
 		-- use("rcarriga/nvim-dap-ui")
+		-- Show Intermediate keymaps
+		use({
+			"folke/which-key.nvim",
+			config = function()
+				vim.o.timeout = true
+				vim.o.timeoutlen = 300
+				require("which-key").setup({})
+			end,
+		})
 
 		if packer_bootstrap then
 			require("packer").sync()

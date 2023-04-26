@@ -13,8 +13,3 @@ vim.opt.termguicolors = true
 -- disable netrw / For NvimTree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-
--- Experimental -> hit zx if breaks, fold with za / For TreeSitter Folds
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 99

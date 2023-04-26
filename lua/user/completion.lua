@@ -1,9 +1,7 @@
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
--- luasnip setup
 local luasnip = require("luasnip")
-
 -- nvim-cmp setup
 local cmp = require("cmp")
 cmp.setup({
