@@ -1,34 +1,3 @@
-local lsp = vim.lsp
-lsp.handlers["textdocument/hover"] = lsp.with(lsp.handlers.hover, {
-	border = "rounded",
-})
-lsp.handlers["textdocument/signaturehelp"] = lsp.with(lsp.handlers.signature_help, {
-	border = "rounded",
-})
-
-local sign = function(opts)
-	vim.fn.sign_define(opts.name, {
-		texthl = opts.name,
-		text = opts.text,
-		numhl = "",
-	})
-end
-sign({ name = "diagnosticsignerror", text = "✘" })
-sign({ name = "diagnosticsignwarn", text = "▲" })
-sign({ name = "diagnosticsignhint", text = "⚑" })
-sign({ name = "diagnosticsigninfo", text = "" })
-
-vim.diagnostic.config({
-	virtual_text = false,
-	severity_sort = true,
-	float = {
-		border = "rounded",
-		source = "always",
-		-- header = "",
-		-- prefix = "",
-	},
-})
-
 -- use lspattach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd("lspattach", {
@@ -85,9 +54,7 @@ require("mason-lspconfig").setup({
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 require("mason-lspconfig").setup_handlers({
 	function(server_name) -- default handler (optional)
-		require("lspconfig")[server_name].setup({
-			capabilities = capabilities,
-		})
+		require("lspconfig")[server_name].setup({ capabilities = capabilities })
 	end,
 	["rust_analyzer"] = function()
 		require("rust-tools").setup({
@@ -103,7 +70,7 @@ require("mason-lspconfig").setup_handlers({
 					-- code action groups
 					vim.keymap.set(
 						"n",
-						"<leader>a",
+						"<space>a",
 						rt.code_action_group.code_action_group,
 						{ buffer = bufnr, desc = "show code action groups" }
 					)
@@ -154,4 +121,31 @@ null_ls.setup({
 		null_ls.builtins.completion.spell,
 	},
 	on_attach = on_attach,
+})
+
+local lsp = vim.lsp
+lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, { border = "rounded" })
+lsp.handlers["textDocument/signatureHelp"] = lsp.with(lsp.handlers.signature_help, { border = "rounded" })
+
+local sign = function(opts)
+	vim.fn.sign_define(opts.name, {
+		texthl = opts.name,
+		text = opts.text,
+		numhl = "",
+	})
+end
+sign({ name = "DiagnosticSignError", text = "✘" })
+sign({ name = "DiagnosticSignWarn", text = "▲" })
+sign({ name = "DiagnosticSignHint", text = "⚑" })
+sign({ name = "DiagnosticSignInfo", text = "" })
+
+vim.diagnostic.config({
+	virtual_text = false,
+	severity_sort = true,
+	float = {
+		border = "rounded",
+		source = "always",
+		-- header = "",
+		-- prefix = "",
+	},
 })
