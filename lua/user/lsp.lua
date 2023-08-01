@@ -117,8 +117,6 @@ null_ls.setup({
 		null_ls.builtins.diagnostics.solhint,
 
 		null_ls.builtins.formatting.stylua,
-
-		null_ls.builtins.completion.spell,
 	},
 	on_attach = on_attach,
 })
