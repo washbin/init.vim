@@ -1,5 +1,5 @@
 vim.api.nvim_exec(
-	[[
+  [[
     """ Integrated terminal opens in insert mode and mapped to Ctrl t
     set splitbelow
     nnoremap <silent> <C-t> :split term://bash<CR> :set nonu<CR> :set nornu<CR> :resize 15<CR> i
@@ -18,10 +18,6 @@ vim.api.nvim_exec(
 	endfunction
 	command! ZoomToggle call s:ZoomToggle()
 	nnoremap <silent> <leader>z :ZoomToggle<CR>
-
-    " Copilot keybind
-    imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
-    let g:copilot_no_tab_map = v:true
 ]],
-	false
+  false
 )
