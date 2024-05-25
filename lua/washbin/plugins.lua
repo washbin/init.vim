@@ -75,9 +75,12 @@ end)
 
 later(function()
   add('github/copilot.vim')
-  vim.api.nvim_exec([[
+  vim.api.nvim_exec(
+    [[
         " Copilot keybind
         imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
         let g:copilot_no_tab_map = v:true
-        ]],false)
+        ]],
+    false
+  )
 end)
