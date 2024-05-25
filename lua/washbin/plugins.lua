@@ -31,10 +31,10 @@ now(function()
 end)
 now(function() require('mini.tabline').setup() end)
 now(function() require('mini.statusline').setup() end)
+-- now(function() require('mini.diff').setup() end)
 
 -- Safely execute later
 later(function() require('mini.pairs').setup() end)
-later(function() require('mini.diff').setup() end)
 later(function() require('mini.files').setup() end)
 later(function() require('mini.completion').setup() end)
 later(function()
@@ -44,7 +44,7 @@ later(function()
   vim.keymap.set('n', '<leader>fb', '<Cmd>Pick buffers<CR>', { desc = 'Find buffers in Telescope' })
   vim.keymap.set('n', '<leader>fh', '<Cmd>Pick help<CR>', { desc = 'Find help in Telescope' })
 end)
-later(function() require('user.clue') end)
+later(function() require('washbin.clue') end)
 
 -- Use external plugins with `add()`
 now(function()
@@ -56,7 +56,7 @@ end)
 now(function()
   -- Supply dependencies near target plugin
   add({ source = 'neovim/nvim-lspconfig', depends = { 'williamboman/mason.nvim' } })
-  require('user.lsp')
+  require('washbin.lsp')
 end)
 
 later(function()
@@ -70,7 +70,7 @@ later(function()
       post_checkout = function() vim.cmd('TSUpdate') end,
     },
   })
-  require('user.treesitter')
+  require('washbin.treesitter')
 end)
 
 later(function()
@@ -79,5 +79,5 @@ later(function()
         " Copilot keybind
         imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
         let g:copilot_no_tab_map = v:true
-        ]])
+        ]],false)
 end)
