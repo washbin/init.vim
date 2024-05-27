@@ -7,7 +7,7 @@ if not vim.loop.fs_stat(mini_path) then
     'clone',
     '--filter=blob:none',
     '--branch',
-    'stable',
+    'main',
     'https://github.com/echasnovski/mini.nvim',
     mini_path,
   }
@@ -21,32 +21,36 @@ require('mini.deps').setup({ path = { package = path_package } })
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 -- Safely execute immediately
-now(function()
-  vim.o.termguicolors = true
-  vim.cmd('colorscheme randomhue')
-end)
+
 now(function()
   require('mini.notify').setup()
   vim.notify = require('mini.notify').make_notify()
 end)
 now(function() require('mini.tabline').setup() end)
 now(function() require('mini.statusline').setup() end)
--- now(function() require('mini.diff').setup() end)
 
 -- Safely execute later
 later(function() require('mini.pairs').setup() end)
-later(function() require('mini.files').setup() end)
-later(function() require('mini.completion').setup() end)
 later(function()
   require('mini.pick').setup()
-  vim.keymap.set('n', '<leader>ff', '<Cmd>Pick files<CR>', { desc = 'Find files in Telescope' })
-  vim.keymap.set('n', '<leader>fg', '<Cmd>Pick grep_live<CR>', { desc = 'Grep in Telescope' })
-  vim.keymap.set('n', '<leader>fb', '<Cmd>Pick buffers<CR>', { desc = 'Find buffers in Telescope' })
-  vim.keymap.set('n', '<leader>fh', '<Cmd>Pick help<CR>', { desc = 'Find help in Telescope' })
+  vim.keymap.set('n', '<leader>ff', '<Cmd>Pick files<CR>', { desc = 'Find files' })
+  vim.keymap.set('n', '<leader>fg', '<Cmd>Pick grep_live<CR>', { desc = 'Live Grep' })
+  vim.keymap.set('n', '<leader>fb', '<Cmd>Pick buffers<CR>', { desc = 'Find buffers' })
+  vim.keymap.set('n', '<leader>fh', '<Cmd>Pick help<CR>', { desc = 'Find help' })
 end)
+later(function() require('mini.diff').setup() end)
+later(function() require('mini.completion').setup() end)
+-- later(function() require('mini.indentscope').setup() end)
+later(function() require('mini.files').setup() end)
 later(function() require('washbin.clue') end)
 
 -- Use external plugins with `add()`
+now(function()
+  vim.o.termguicolors = true
+  add('folke/tokyonight.nvim')
+  vim.cmd('colorscheme tokyonight')
+end)
+
 now(function()
   -- Add to current session (install if absent)
   add('nvim-tree/nvim-web-devicons')
@@ -54,9 +58,43 @@ now(function()
 end)
 
 now(function()
-  -- Supply dependencies near target plugin
-  add({ source = 'neovim/nvim-lspconfig', depends = { 'williamboman/mason.nvim' } })
+  add('neovim/nvim-lspconfig')
   require('washbin.lsp')
+  require('washbin.servers')
+end)
+
+later(function()
+  add('mfussenegger/nvim-lint')
+  require('lint').linters_by_ft = {
+    markdown = { 'vale' },
+  }
+  vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+    callback = function()
+      -- try_lint without arguments runs the linters defined in `linters_by_ft`
+      -- for the current filetype
+      require('lint').try_lint()
+
+      -- You can call `try_lint` with a linter name or a list of names to always
+      -- run specific linters, independent of the `linters_by_ft` configuration
+      require('lint').try_lint('cspell')
+    end,
+  })
+end)
+later(function()
+  add('stevearc/conform.nvim')
+  require('conform').setup({
+    formatters_by_ft = {
+      lua = { 'stylua' },
+      -- Conform will run multiple formatters sequentially
+      python = { 'isort', 'black' },
+      -- Use a sub-list to run only the first available formatter
+      javascript = { { 'prettierd', 'prettier' } },
+    },
+  })
+  vim.api.nvim_create_autocmd('BufWritePre', {
+    pattern = '*',
+    callback = function(args) require('conform').format({ bufnr = args.buf }) end,
+  })
 end)
 
 later(function()

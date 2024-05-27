@@ -14,14 +14,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function(event) vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 }) end,
 })
 
-local format = vim.api.nvim_create_augroup('format', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = { '*.rs', '*.py', '*.go', '*.lua', '*.js', '*.ts', '*.jsx', '*.tsx', '*.json' },
-  group = format,
-  desc = 'Format file on save',
-  callback = function(event) vim.lsp.buf.format() end,
-})
-
 local cursorline = vim.api.nvim_create_augroup('cursorline', { clear = true })
 vim.api.nvim_create_autocmd('WinEnter', {
   group = cursorline,
