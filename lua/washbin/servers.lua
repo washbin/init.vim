@@ -19,8 +19,6 @@ require('lspconfig').lua_ls.setup({
         library = {
           vim.env.VIMRUNTIME,
         },
-        -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-        -- library = vim.api.nvim_get_runtime_file("", true)
       },
     })
   end,
@@ -39,3 +37,4 @@ require('lspconfig').rust_analyzer.setup({
     },
   },
 })
+require('lspconfig').nil_ls.setup({})

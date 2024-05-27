@@ -6,6 +6,8 @@ require('nvim-treesitter.configs').setup({
   ensure_installed = {
     'c',
     'css',
+    'eex',
+    'elixir',
     'html',
     'javascript',
     'json',

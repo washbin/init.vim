@@ -1,4 +1,4 @@
-vim.api.nvim_exec(
+vim.api.nvim_exec2(
   [[
     """ Integrated terminal opens in insert mode and mapped to Ctrl t
     set splitbelow
@@ -17,7 +17,7 @@ vim.api.nvim_exec(
 	    endif
 	endfunction
 	command! ZoomToggle call s:ZoomToggle()
-	nnoremap <silent> <leader>z :ZoomToggle<CR>
+	nnoremap <silent> <Leader>z :ZoomToggle<CR>
 ]],
-  false
+  {}
 )
