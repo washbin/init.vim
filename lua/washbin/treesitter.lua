@@ -1,8 +1,5 @@
 require('nvim-treesitter.configs').setup({
   highlight = { enable = true, language_tree = true },
-  indent = { enable = true },
-  autotag = { enable = true },
-  refactor = { highlight_definitions = { enable = true } },
   ensure_installed = {
     'c',
     'css',
