@@ -62,15 +62,15 @@ later(function()
   local minifiles_toggle = function(...)
     if not MiniFiles.close() then MiniFiles.open(...) end
   end
-  vim.keymap.set('n', '<Leader>e', minifiles_toggle, { desc = 'toggle MiniFiles' })
+  vim.keymap.set('n', '<Leader>e', minifiles_toggle, { desc = 'Toggle MiniFiles' })
 end)
 later(function() require('washbin.clue') end)
 
 -- Use external plugins with `add()`
 now(function()
   vim.o.termguicolors = true
-  add('folke/tokyonight.nvim')
-  vim.cmd('colorscheme tokyonight')
+  add('rebelot/kanagawa.nvim')
+  vim.cmd('colorscheme kanagawa')
 end)
 
 now(function()

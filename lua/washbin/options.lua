@@ -10,7 +10,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.termguicolors = true
 -- Set completeopt to have a better completion experience
-vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+-- vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 -- disable netrw
 vim.g.loaded_netrw = 1
