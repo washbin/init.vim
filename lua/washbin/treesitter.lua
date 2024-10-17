@@ -5,6 +5,7 @@ require('nvim-treesitter.configs').setup({
     'css',
     'eex',
     'elixir',
+    'heex',
     'html',
     'javascript',
     'json',

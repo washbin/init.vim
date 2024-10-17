@@ -8,6 +8,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client.supports_method('textDocument/implementation') then
       vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = 'go to implementation' })
     end
+    if client.supports_method('textDocument/completion') then
+      -- Enable auto-completion
+      -- vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+    end
+    if client.supports_method('textDocument/formatting') then
+      -- Format the current buffer on save
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        buffer = args.buf,
+        callback = function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id }) end,
+      })
+    end
     vim.keymap.set({ 'n', 'v' }, '<Leader>ca', vim.lsp.buf.code_action, { desc = 'code action' })
     vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename, { desc = 'rename symbol' })
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'goto definition' })

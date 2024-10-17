@@ -26,7 +26,9 @@ require('lspconfig').lua_ls.setup({
     Lua = {},
   },
 })
-require('lspconfig').elixirls.setup({})
+require('lspconfig').elixirls.setup({
+  cmd = { '/home/washbin/Desktop/elixir-ls/release/language_server.sh' },
+})
 require('lspconfig').gopls.setup({})
 require('lspconfig').rust_analyzer.setup({
   settings = {
