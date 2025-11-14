@@ -1,17 +1,28 @@
-require('lspconfig').phpactor.setup({
+vim.lsp.config('phpactor', {
   init_options = {
     ['language_server_phpstan.enabled'] = false,
     ['language_server_psalm.enabled'] = false,
   },
 })
-require('lspconfig').lua_ls.setup({
+vim.lsp.config('lua_ls', {
   on_init = function(client)
-    local path = client.workspace_folders[1].name
-    if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then return end
+    if client.workspace_folders then
+      local path = client.workspace_folders[1].name
+      if
+        path ~= vim.fn.stdpath('config')
+        and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+      then
+        return
+      end
+    end
 
     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
       runtime = {
         version = 'LuaJIT',
+        path = {
+          'lua/?.lua',
+          'lua/?/init.lua',
+        },
       },
       -- Make the server aware of Neovim runtime files
       workspace = {
@@ -26,11 +37,12 @@ require('lspconfig').lua_ls.setup({
     Lua = {},
   },
 })
-require('lspconfig').elixirls.setup({
-  cmd = { '/home/washbin/Desktop/elixir-ls/release/language_server.sh' },
+vim.lsp.config('expert', {
+  cmd = { 'expert', '--stdio' },
+  root_markers = { 'mix.exs', '.git' },
+  filetypes = { 'elixir', 'eelixir', 'heex' },
 })
-require('lspconfig').gopls.setup({})
-require('lspconfig').rust_analyzer.setup({
+vim.lsp.config('rust_analyzer', {
   settings = {
     ['rust-analyzer'] = {
       diagnostics = {
@@ -39,4 +51,16 @@ require('lspconfig').rust_analyzer.setup({
     },
   },
 })
-require('lspconfig').nil_ls.setup({})
+
+local servers = {
+  'biome',
+  'expert',
+  'gopls',
+  'lua_ls',
+  'rust_analyzer',
+  'stylua',
+}
+
+for i, server in ipairs(servers) do
+  vim.lsp.enable(server)
+end
