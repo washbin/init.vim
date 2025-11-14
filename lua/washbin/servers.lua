@@ -34,13 +34,12 @@ vim.lsp.config('lua_ls', {
     })
   end,
   settings = {
-    Lua = {},
+    Lua = {
+      format = {
+        enable = false,
+      },
+    },
   },
-})
-vim.lsp.config('expert', {
-  cmd = { 'expert', '--stdio' },
-  root_markers = { 'mix.exs', '.git' },
-  filetypes = { 'elixir', 'eelixir', 'heex' },
 })
 vim.lsp.config('rust_analyzer', {
   settings = {
@@ -53,12 +52,11 @@ vim.lsp.config('rust_analyzer', {
 })
 
 local servers = {
-  'biome',
   'expert',
   'gopls',
   'lua_ls',
   'rust_analyzer',
-  'stylua',
+  'ts_ls',
 }
 
 for i, server in ipairs(servers) do

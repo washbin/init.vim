@@ -37,7 +37,10 @@ later(function()
   vim.keymap.set('n', '<Leader>fb', '<Cmd>Pick buffers<CR>', { desc = 'Find buffers' })
   vim.keymap.set('n', '<Leader>fh', '<Cmd>Pick help<CR>', { desc = 'Find help' })
 end)
-later(function() require('mini.diff').setup() end)
+later(function()
+  require('mini.diff').setup()
+  vim.keymap.set('n', '<Leader>t', MiniDiff.toggle_overlay, { desc = 'Toggle diff overlay' })
+end)
 later(
   function()
     require('mini.completion').setup({
@@ -73,10 +76,22 @@ now(function()
   vim.cmd('colorscheme kanagawa')
 end)
 
-now(function()
-  -- Add to current session (install if absent)
-  add('nvim-tree/nvim-web-devicons')
-  require('nvim-web-devicons').setup()
+now(function() require('mini.icons').setup() end)
+
+later(function()
+  add({
+    source = 'mikavilpas/yazi.nvim',
+    depends = { 'nvim-lua/plenary.nvim' },
+  })
+  vim.keymap.set('n', '<leader>y', function() require('yazi').yazi() end, { desc = 'Toggle Yazi' })
+  vim.g.loaded_netrwPlugin = 1
+  vim.api.nvim_create_autocmd('UIEnter', {
+    callback = function()
+      require('yazi').setup({
+        open_for_directories = true,
+      })
+    end,
+  })
 end)
 
 now(function()
@@ -89,7 +104,10 @@ later(function()
   add('mfussenegger/nvim-lint')
   require('lint').linters_by_ft = {
     markdown = { 'vale' },
-    javascript = { 'eslint' },
+    javascript = { 'biomejs' }, --{ 'eslint' },
+    javascriptreact = { 'biomejs' },
+    typescript = { 'biomejs' },
+    typescriptreact = { 'biomejs' },
     nix = { 'nix' },
     php = { 'phpcs' },
   }
@@ -105,11 +123,12 @@ later(function()
       nix = { 'nixpkgs_fmt' },
       rust = { 'rustfmt' },
       elixir = { 'mix' },
-      -- Conform will run multiple formatters sequentially
-      python = { 'isort', 'black' },
+      python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' }, --{ 'isort', 'black' },
       go = { 'goimports', 'gofmt' },
-      -- Use a sub-list to run only the first available formatter
-      javascript = { { 'prettierd', 'prettier' } },
+      javascript = { 'biome', 'biome-organize-imports' }, --{ 'prettierd', 'prettier', stop_after_first = true },
+      typescript = { 'biome', 'biome-organize-imports' },
+      javascriptreact = { 'biome', 'biome-organize-imports' },
+      typescriptreact = { 'biome', 'biome-organize-imports' },
     },
   })
   vim.api.nvim_create_autocmd('BufWritePre', {

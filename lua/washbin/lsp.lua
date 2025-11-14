@@ -4,27 +4,28 @@ local user_lsp_group = vim.api.nvim_create_augroup('UserLSPConfig', {})
 vim.api.nvim_create_autocmd('LspAttach', {
   group = user_lsp_group,
   callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client.supports_method('textDocument/implementation') then
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+
+    if client:supports_method('textDocument/implementation') then
       vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = 'go to implementation' })
     end
-    if client.supports_method('textDocument/completion') then
-      -- Enable auto-completion
-      -- vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-    end
-    if client.supports_method('textDocument/formatting') then
-      -- Format the current buffer on save
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        buffer = args.buf,
-        callback = function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id }) end,
-      })
-    end
+
+    -- if
+    --   not client:supports_method('textDocument/willSaveWaitUntil')
+    --   and client:supports_method('textDocument/formatting')
+    -- then
+    --   vim.api.nvim_create_autocmd('BufWritePre', {
+    --     group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
+    --     buffer = args.buf,
+    --     callback = function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 }) end,
+    --   })
+    -- end
+
     vim.keymap.set({ 'n', 'v' }, '<Leader>ca', vim.lsp.buf.code_action, { desc = 'code action' })
     vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename, { desc = 'rename symbol' })
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'goto definition' })
-    vim.keymap.set('n', '<Leader>d', vim.lsp.buf.type_definition, { desc = 'goto type definition' })
-    vim.keymap.set('n', '<Leader>sm', vim.lsp.buf.document_symbol, { desc = 'list document symbols' })
-    vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, { desc = 'list symbol references' })
+    vim.keymap.set('n', '<Leader>d', vim.diagnostic.open_float, { desc = 'open inline diagnostics' })
+    vim.keymap.set('n', '<Leader>rs', ':LspRestart<CR>', { desc = 'restart lsp' })
   end,
 })
 
