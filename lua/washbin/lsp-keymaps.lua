@@ -10,6 +10,22 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = 'go to implementation' })
     end
 
+    if client:supports_method('textDocument/documentHighlight') then
+      -- vim.api.nvim_set_hl(0, 'hl-LspReferenceText', { bg="" })
+      -- vim.api.nvim_set_hl(0, 'hl-LspReferenceRead', { bg="" })
+      -- vim.api.nvim_set_hl(0, 'hl-LspReferenceWrite', {bg="" })
+      vim.api.nvim_create_autocmd('CursorHold', {
+        group = user_lsp_group,
+        desc = 'Highlight references under cursor',
+        callback = function() vim.lsp.buf.document_highlight() end,
+      })
+      vim.api.nvim_create_autocmd('CursorMoved', {
+        group = user_lsp_group,
+        desc = 'Clear highlights on cursor move',
+        callback = function() vim.lsp.buf.clear_references() end,
+      })
+    end
+
     -- if
     --   not client:supports_method('textDocument/willSaveWaitUntil')
     --   and client:supports_method('textDocument/formatting')
@@ -27,17 +43,4 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<Leader>d', vim.diagnostic.open_float, { desc = 'open inline diagnostics' })
     vim.keymap.set('n', '<Leader>rs', ':LspRestart<CR>', { desc = 'restart lsp' })
   end,
-})
-
-local lsp = vim.lsp
-lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, { border = 'rounded' })
-lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, { border = 'rounded' })
-
-vim.diagnostic.config({
-  virtual_text = false,
-  severity_sort = true,
-  float = {
-    border = 'rounded',
-    source = true,
-  },
 })

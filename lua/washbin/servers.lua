@@ -51,14 +51,10 @@ vim.lsp.config('rust_analyzer', {
   },
 })
 
-local servers = {
+vim.lsp.enable({
   'expert',
   'gopls',
   'lua_ls',
   'rust_analyzer',
   'ts_ls',
-}
-
-for i, server in ipairs(servers) do
-  vim.lsp.enable(server)
-end
+})

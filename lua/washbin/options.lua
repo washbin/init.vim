@@ -1,17 +1,13 @@
 vim.opt.number = true
-vim.opt.mouse = 'a'
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.hlsearch = true
-vim.opt.wrap = true
-vim.opt.breakindent = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.termguicolors = true
--- Set completeopt to have a better completion experience
--- vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.opt.relativenumber = true
 
--- disable netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+vim.opt.ignorecase = true -- make search case insensitive
+vim.opt.smartcase = true -- make search case insensitive only on all low caps
+
+vim.opt.breakindent = true -- indent after line wrap
+
+vim.opt.tabstop = 4 -- view tab as 4 spaces
+vim.opt.shiftwidth = 4 -- indent 4 spaces on >> and <<
+vim.opt.expandtab = true -- expand tabs to appropriate spaces
+
+vim.opt.winborder = 'rounded' -- border style for floating windows
