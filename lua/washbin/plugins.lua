@@ -68,18 +68,26 @@ later(function()
 end)
 later(function()
   add('stevearc/conform.nvim')
+  local jsformat = function(bufnr)
+    if require('conform').get_formatter_info('prettier', bufnr).available then
+      return { 'prettier' }
+    else
+      return { 'biome', 'biome-organize-imports' }
+    end
+  end
+
   require('conform').setup({
     formatters_by_ft = {
       lua = { 'stylua' },
       nix = { 'nixpkgs_fmt' },
       rust = { 'rustfmt' },
       elixir = { 'mix' },
-      python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' }, --{ 'isort', 'black' },
+      python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' }, -- { 'isort', 'black' }, stop_after_first = true },
       go = { 'goimports', 'gofmt' },
-      javascript = { 'biome', 'biome-organize-imports' }, --{ 'prettierd', 'prettier', stop_after_first = true },
-      typescript = { 'biome', 'biome-organize-imports' },
-      javascriptreact = { 'biome', 'biome-organize-imports' },
-      typescriptreact = { 'biome', 'biome-organize-imports' },
+      javascript = jsformat,
+      typescript = jsformat,
+      javascriptreact = jsformat,
+      typescriptreact = jsformat,
     },
   })
   vim.api.nvim_create_autocmd('BufWritePre', {
