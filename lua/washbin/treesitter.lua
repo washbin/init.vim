@@ -25,8 +25,6 @@ require('nvim-treesitter').install(filetypes)
 vim.opt.foldmethod = 'expr'
 vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.foldenable = false -- start with all folds disabled
-vim.opt.foldcolumn = 'auto' -- enable foldcolumn and resize as needed
-vim.opt.statuscolumn = '%s%l %C ' -- make fold column nearest to text buffer, by default it is farthest
 vim.opt.fillchars = {
   fold = '-', -- trailing symbol in folds
 }
