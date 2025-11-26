@@ -19,11 +19,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
       vim.api.nvim_create_autocmd('CursorHold', {
         group = user_lsp_group,
+        buffer = args.buf,
         desc = 'Highlight references under cursor',
         callback = function() vim.lsp.buf.document_highlight() end,
       })
       vim.api.nvim_create_autocmd('CursorMoved', {
         group = user_lsp_group,
+        buffer = args.buf,
         desc = 'Clear highlights on cursor move',
         callback = function() vim.lsp.buf.clear_references() end,
       })
@@ -34,16 +36,21 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --   and client:supports_method('textDocument/formatting')
     -- then
     --   vim.api.nvim_create_autocmd('BufWritePre', {
-    --     group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
+    --     group = user_lsp_group,
     --     buffer = args.buf,
+    --     desc = 'Format code in current buffer',
     --     callback = function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 }) end,
     --   })
     -- end
 
-    vim.keymap.set({ 'n', 'v' }, '<Leader>ca', vim.lsp.buf.code_action, { desc = 'code action' })
-    vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename, { desc = 'rename symbol' })
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'goto definition' })
-    vim.keymap.set('n', '<Leader>d', vim.diagnostic.open_float, { desc = 'open inline diagnostics' })
-    vim.keymap.set('n', '<Leader>rs', ':LspRestart<CR>', { desc = 'restart lsp' })
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'goto definition', buffer = args.buf })
+    vim.keymap.set('n', '<Leader>d', vim.diagnostic.open_float, { desc = 'open inline diagnostics', buffer = args.buf })
+    vim.keymap.set('n', '<Leader>r', ':LspRestart<CR>', { desc = 'restart lsp', buffer = args.buf })
+    vim.keymap.set(
+      'n',
+      '<Leader>h',
+      function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end,
+      { desc = 'Toggle inlay hints', buffer = args.buf }
+    )
   end,
 })

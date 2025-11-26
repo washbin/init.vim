@@ -3,9 +3,4 @@ local load = function(mod)
   require(mod)
 end
 
-load('washbin.options')
-load('washbin.keymaps')
-load('washbin.commands')
-load('washbin.autocommands')
-load('washbin.legacy')
 load('washbin.plugins')

@@ -1,10 +1,5 @@
-vim.lsp.config('phpactor', {
-  init_options = {
-    ['language_server_phpstan.enabled'] = false,
-    ['language_server_psalm.enabled'] = false,
-  },
-})
-vim.lsp.config('lua_ls', {
+---@type vim.lsp.Config
+return {
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name
@@ -40,21 +35,4 @@ vim.lsp.config('lua_ls', {
       },
     },
   },
-})
-vim.lsp.config('rust_analyzer', {
-  settings = {
-    ['rust-analyzer'] = {
-      diagnostics = {
-        enable = false,
-      },
-    },
-  },
-})
-
-vim.lsp.enable({
-  'expert',
-  'gopls',
-  'lua_ls',
-  'rust_analyzer',
-  'ts_ls',
-})
+}
