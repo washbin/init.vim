@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 local numbertoggle = vim.api.nvim_create_augroup('numbertoggle', { clear = true })
 
-vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'FocusLost' }, {
+vim.api.nvim_create_autocmd({ 'WinLeave' }, {
   group = numbertoggle,
   desc = 'Show absolute number when leaving window',
   callback = function(event)
@@ -20,7 +20,7 @@ vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'FocusLost' }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter', 'FocusGained' }, {
+vim.api.nvim_create_autocmd({ 'WinEnter' }, {
   group = numbertoggle,
   desc = 'Show hybrid number when entering window',
   callback = function(event)
