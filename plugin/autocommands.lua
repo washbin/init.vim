@@ -15,8 +15,8 @@ vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'FocusLost' }, {
   group = numbertoggle,
   desc = 'Show absolute number when leaving window',
   callback = function(event)
-    vim.opt_local.relativenumber = false
-    vim.opt_local.number = true
+    vim.wo.relativenumber = false
+    vim.wo.number = true
   end,
 })
 
@@ -24,8 +24,8 @@ vim.api.nvim_create_autocmd({ 'WinEnter', 'BufEnter', 'FocusGained' }, {
   group = numbertoggle,
   desc = 'Show hybrid number when entering window',
   callback = function(event)
-    vim.opt_local.relativenumber = true
-    vim.opt_local.number = true
+    vim.wo.relativenumber = true
+    vim.wo.number = true
   end,
 })
 
@@ -34,11 +34,11 @@ local cursorline = vim.api.nvim_create_augroup('cursorline', { clear = true })
 vim.api.nvim_create_autocmd('WinEnter', {
   group = cursorline,
   desc = 'Set cursor line on entering a window',
-  callback = function(event) vim.opt_local.cursorline = true end,
+  callback = function(event) vim.wo.cursorline = true end,
 })
 
 vim.api.nvim_create_autocmd('WinLeave', {
   group = cursorline,
   desc = 'Remove cursorline when leaving window',
-  callback = function(event) vim.opt_local.cursorline = false end,
+  callback = function(event) vim.wo.cursorline = false end,
 })

@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     if client:supports_method('textDocument/documentHighlight') then
-      vim.opt.updatetime = 250
+      vim.o.updatetime = 250
 
       -- vim.api.nvim_set_hl(0, 'hl-LspReferenceText', { bg="" })
       -- vim.api.nvim_set_hl(0, 'hl-LspReferenceRead', { bg="" })
