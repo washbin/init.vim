@@ -1,0 +1,29 @@
+{
+  "plugins": {
+    "conform.nvim": {
+      "rev": "4993e07fac6679d0a5005aa7499e0bad2bd39f19",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "doom-one.nvim": {
+      "rev": "beae92173315c7282f6897e666cfd67fbf0f3ac9",
+      "src": "https://github.com/NTBBloodbath/doom-one.nvim"
+    },
+    "mini.nvim": {
+      "rev": "72b0194c56c984476c5975b62eb340fd1aa1686a",
+      "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "nvim-lint": {
+      "rev": "d1118791070d090777398792a73032a0ca5c79ff",
+      "src": "https://github.com/mfussenegger/nvim-lint"
+    },
+    "nvim-lspconfig": {
+      "rev": "de659c9c0d53df0e6b4747d8d1ef22ba1164291d",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-treesitter": {
+      "rev": "d56ed0f7f90d6492ce422f5e0a9cb36d3169eb96",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'main'"
+    }
+  }
+}

@@ -27,7 +27,7 @@ local function toggleterm()
   vim.wo[win].signcolumn = 'no'
 
   -- Start terminal if not running
-  if vim.bo[buf].buftype ~= 'terminal' then vim.cmd.terminal() end -- vim.fn.termopen(vim.o.shell) end
+  if vim.bo[buf].buftype ~= 'terminal' then vim.cmd('terminal') end -- vim.fn.termopen(vim.o.shell) end
 
   vim.cmd('startinsert')
 end
