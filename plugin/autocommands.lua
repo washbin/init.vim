@@ -6,7 +6,7 @@ local user_cmds = vim.api.nvim_create_augroup('user_cmds', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = user_cmds,
   desc = 'Highlight on yank',
-  callback = function(event) vim.highlight.on_yank({ higroup = 'Visual', timeout = 200 }) end,
+  callback = function(event) vim.hl.on_yank({ higroup = 'Visual', timeout = 200 }) end,
 })
 
 local numbertoggle = vim.api.nvim_create_augroup('numbertoggle', { clear = true })
