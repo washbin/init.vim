@@ -15,8 +15,7 @@ vim.api.nvim_create_autocmd({ 'WinLeave' }, {
   group = numbertoggle,
   desc = 'Show absolute number when leaving window',
   callback = function(event)
-    vim.wo.relativenumber = false
-    vim.wo.number = true
+    if vim.wo.relativenumber then vim.wo.relativenumber = false end
   end,
 })
 
@@ -24,8 +23,7 @@ vim.api.nvim_create_autocmd({ 'WinEnter' }, {
   group = numbertoggle,
   desc = 'Show hybrid number when entering window',
   callback = function(event)
-    vim.wo.relativenumber = true
-    vim.wo.number = true
+    if vim.wo.number then vim.wo.relativenumber = true end
   end,
 })
 
