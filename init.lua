@@ -4,14 +4,13 @@ vim.g.mapleader = ' '
 vim.pack.add({
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
   { src = 'https://github.com/neovim/nvim-lspconfig' },
-  -- { src = 'https://github.com/rebelot/kanagawa.nvim' },
-  { src = 'https://github.com/NTBBloodbath/doom-one.nvim' },
+  { src = 'https://github.com/folke/tokyonight.nvim' },
   { src = 'https://github.com/nvim-mini/mini.nvim' },
   { src = 'https://github.com/mfussenegger/nvim-lint' },
   { src = 'https://github.com/stevearc/conform.nvim' },
 })
 
-vim.cmd('colorscheme doom-one')
+vim.cmd('colorscheme tokyonight-storm')
 
 require('washbin.treesitter')
 
@@ -32,7 +31,6 @@ require('washbin.mini-completion')
 
 require('washbin.mini-files')
 require('washbin.mini-diff')
--- require('mini.git').setup()
 
 require('washbin.mini-pick')
 require('washbin.mini-clue')
