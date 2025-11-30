@@ -10,6 +10,14 @@ vim.pack.add({
   { src = 'https://github.com/stevearc/conform.nvim' },
 })
 
+require('tokyonight').setup({
+  on_highlights = function(hl, c)
+    hl.WinSeparator = {
+      fg = c.blue,
+      bold = true,
+    }
+  end,
+})
 vim.cmd('colorscheme tokyonight-storm')
 
 require('washbin.treesitter')
@@ -22,7 +30,6 @@ vim.notify = require('mini.notify').make_notify()
 require('mini.icons').setup()
 MiniIcons.tweak_lsp_kind() -- for icons in mini.completion
 
-require('mini.tabline').setup()
 require('mini.statusline').setup()
 
 require('washbin.conform')
