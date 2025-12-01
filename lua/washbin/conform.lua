@@ -1,23 +1,20 @@
-local jsformat = function(bufnr)
-  if require('conform').get_formatter_info('prettier', bufnr).available then
-    return { 'prettier' }
-  else
-    return { 'biome', 'biome-organize-imports' }
-  end
-end
-
 require('conform').setup({
   formatters_by_ft = {
+    elixir = { 'mix' },
+    go = { 'goimports', 'gofmt', stop_after_first = true },
     lua = { 'stylua' },
     nix = { 'nixpkgs_fmt' },
+    python = {
+      'ruff_fix',
+      'ruff_format',
+      'ruff_organize_imports',
+    },
     rust = { 'rustfmt' },
-    elixir = { 'mix' },
-    python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' }, -- { 'isort', 'black' }, stop_after_first = true },
-    go = { 'goimports', 'gofmt' },
-    javascript = jsformat,
-    typescript = jsformat,
-    javascriptreact = jsformat,
-    typescriptreact = jsformat,
+
+    javascript = { 'biome', 'biome-organize-imports' },
+    javascriptreact = { 'biome', 'biome-organize-imports' },
+    typescript = { 'biome', 'biome-organize-imports' },
+    typescriptreact = { 'biome', 'biome-organize-imports' },
   },
 })
 

@@ -1,11 +1,12 @@
 require('lint').linters_by_ft = {
-  markdown = { 'vale' },
-  javascript = { 'biomejs' }, --{ 'eslint' },
+  elixir = { 'credo' },
+  nix = { 'nix' },
+  python = { 'ruff' },
+
+  javascript = { 'biomejs' },
   javascriptreact = { 'biomejs' },
   typescript = { 'biomejs' },
   typescriptreact = { 'biomejs' },
-  nix = { 'nix' },
-  php = { 'phpcs' },
 }
 
 vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
