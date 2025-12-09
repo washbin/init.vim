@@ -1,8 +1,10 @@
 vim.lsp.enable({
+  'clangd',
   'expert',
   'gopls',
   'lua_ls',
+  'nixd',
   'rust_analyzer',
-  'ts_ls',
+  'tsgo',
   'ty',
 })

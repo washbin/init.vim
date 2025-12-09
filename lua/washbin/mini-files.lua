@@ -7,7 +7,7 @@ end
 vim.keymap.set('n', '<Leader>e', minifiles_toggle, { desc = 'Toggle MiniFiles' })
 vim.keymap.set(
   'n',
-  '<Leader>l',
+  '<Leader>E',
   function() minifiles_toggle(vim.api.nvim_buf_get_name(0)) end,
-  { desc = 'lookup current directory in minifiles' }
+  { desc = 'Toggle MiniFiles in directory of current file' }
 )

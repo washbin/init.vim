@@ -1,6 +1,6 @@
 require('mini.pick').setup()
 
-vim.keymap.set('n', '<Leader>ff', '<Cmd>Pick files<CR>', { desc = 'Find files' })
-vim.keymap.set('n', '<Leader>fg', '<Cmd>Pick grep_live<CR>', { desc = 'Live Grep' })
-vim.keymap.set('n', '<Leader>fb', '<Cmd>Pick buffers<CR>', { desc = 'Find buffers' })
-vim.keymap.set('n', '<Leader>fh', '<Cmd>Pick help<CR>', { desc = 'Find help' })
+vim.keymap.set('n', '<Leader>f', '<Cmd>Pick files<CR>', { desc = 'Files' })
+vim.keymap.set('n', '<Leader>/', '<Cmd>Pick grep_live<CR>', { desc = 'Live Grep' })
+vim.keymap.set('n', '<Leader>b', '<Cmd>Pick buffers<CR>', { desc = 'Buffers' })
+vim.keymap.set('n', '<Leader>?', '<Cmd>Pick help<CR>', { desc = 'Help' })

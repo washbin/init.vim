@@ -1,6 +1,5 @@
 require('lint').linters_by_ft = {
   elixir = { 'credo' },
-  nix = { 'nix' },
   python = { 'ruff' },
 
   javascript = { 'biomejs' },

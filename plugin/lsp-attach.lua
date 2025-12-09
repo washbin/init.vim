@@ -24,7 +24,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     if client:supports_method('textDocument/definition') then
-      vim.keymap.set('n', 'grd', vim.lsp.buf.definition, { desc = 'goto definition', buffer = args.buf })
+      vim.keymap.set('n', 'grd', vim.lsp.buf.definition, { desc = 'Goto definition', buffer = args.buf })
     end
 
     if client:supports_method('textDocument/inlayHint') then
@@ -35,7 +35,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
         { desc = 'Toggle inlay hints', buffer = args.buf }
       )
     end
-
-    vim.keymap.set('n', '<Leader>r', ':LspRestart<CR>', { desc = 'restart lsp', buffer = args.buf })
   end,
 })

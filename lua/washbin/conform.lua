@@ -1,9 +1,10 @@
 require('conform').setup({
   formatters_by_ft = {
+    c = { 'clang-format' },
     elixir = { 'mix' },
-    go = { 'goimports', 'gofmt', stop_after_first = true },
+    go = { 'gofmt' },
     lua = { 'stylua' },
-    nix = { 'nixpkgs_fmt' },
+    nix = { 'nixfmt' },
     python = {
       'ruff_fix',
       'ruff_format',

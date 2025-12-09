@@ -31,6 +31,7 @@ require('mini.icons').setup()
 MiniIcons.tweak_lsp_kind() -- for icons in mini.completion
 
 require('mini.statusline').setup()
+require('mini.cmdline').setup()
 
 require('washbin.conform')
 require('washbin.nvim-lint')
