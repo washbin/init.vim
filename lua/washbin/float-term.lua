@@ -1,6 +1,9 @@
+-- lua/washbin/float-term.lua
+local M = {}
+
 local win, buf = nil, nil
 
-local function toggleterm()
+function M.toggle()
   -- Hide if open
   if win and vim.api.nvim_win_is_valid(win) then
     vim.api.nvim_win_hide(win)
@@ -27,9 +30,9 @@ local function toggleterm()
   vim.wo[win].signcolumn = 'no'
 
   -- Start terminal if not running
-  if vim.bo[buf].buftype ~= 'terminal' then vim.cmd('terminal') end -- vim.fn.termopen(vim.o.shell) end
+  if vim.bo[buf].buftype ~= 'terminal' then vim.cmd('terminal') end
 
   vim.cmd('startinsert')
 end
 
-vim.keymap.set({ 'n', 't' }, '<C-t>', toggleterm, { desc = 'Toggle floating terminal' })
+return M

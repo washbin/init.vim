@@ -3,8 +3,8 @@ require('conform').setup({
     c = { 'clang-format' },
     elixir = { 'mix' },
     go = { 'gofmt' },
+    heex = { 'mix' },
     lua = { 'stylua' },
-    nix = { 'nixfmt' },
     python = {
       'ruff_fix',
       'ruff_format',
@@ -19,7 +19,9 @@ require('conform').setup({
   },
 })
 
+local format_group = vim.api.nvim_create_augroup('UserFormatting', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePre', {
+  group = format_group,
   pattern = '*',
   callback = function(args) require('conform').format({ bufnr = args.buf }) end,
 })
